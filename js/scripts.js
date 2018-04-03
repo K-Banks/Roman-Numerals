@@ -1,27 +1,18 @@
-var answerString = "";
-convertNumber = 0;
-
-function converter(convertNumber) {
+function converter(convertNumber, convertOne, convertFive, convertTen) {
+  var returnString = "";
   for (var i = 0; i < convertNumber; i++) {
-    if (count === 3) {
-      answerString = answerString + "V";
-      answerString = answerString.replace("II","");
-    } else if (i === 4) {
-      answerString = answerString.replace("I","");
-    } else {
-      answerString = answerString + "I";
-    }
-    if (i === 8) {
-      answerString = answerString.replace(/V/g,"");
-      answerString = answerString + "X";
-    }
-    var count = 0;
-    for(var u = 0; u <answerString.length; ++u){
-      if (answerString[u] == "I") {
-        count++;
-      }
+  // debugger;
+    if (i < 3 || i < 8 && i > 4) {
+      returnString += convertOne;
+    } else if (i === 3) {
+      returnString = returnString.replace(convertOne + convertOne + convertOne, convertOne + convertFive);
+    } else if (i === 4 || i === 9) {
+      returnString = returnString.replace(convertOne,"")
+    } else if (i === 8) {
+      returnString = returnString.replace(returnString, convertOne + convertTen)
     }
   }
+  return returnString;
 }
 
 
@@ -29,6 +20,7 @@ $(document).ready(function(){
   $("#Number-converter").submit(function(event){
     //  debugger;
     event.preventDefault();
+    var answerString = "";
     var userInput = $("input#Roman-Numerals").val();
     var userArray = [];
     userArray = userInput.split("");
@@ -36,29 +28,16 @@ $(document).ready(function(){
       userArray[a] = parseInt(userArray[a]);
     }
     userArray = userArray.reverse();
-    var secondArray = ["I","X","C","M"];
-    var thirdArray = ["V","L","D"];
+    var romanArray = ["I", "V", "X", "L", "C", "D", "M"];
 
     for (var b = 0; b < userArray.length; b++) {
       var convertNumber = userArray[b];
-      converter(convertNumber);
+      var convertOne = romanArray[b];
+      var convertFive = romanArray[b+1];
+      var convertTen = romanArray[b+2];
+      var romanNumber = converter(convertNumber, convertOne, convertFive, convertTen);
+      answerString = romanNumber + answerString;
     }
-
-    // debugger;
-    if (userInput === 10) {
-      answerString = "X";
-    } else if (userInput === 50) {
-      answerString = "L";
-    } else if (userInput === 100) {
-      answerString = "C";
-    } else if (userInput === 500) {
-      answerString = "D";
-    } else if (userInput === 1000) {
-      answerString = "M";
-    } else {
-      // debugger;
-  }
-
     $("#Output").text(answerString);
   });
 });
