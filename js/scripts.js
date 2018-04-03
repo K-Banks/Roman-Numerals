@@ -1,15 +1,17 @@
 function converter(convertNumber, convertOne, convertFive, convertTen) {
   var returnString = "";
   for (var i = 0; i < convertNumber; i++) {
-  // debugger;
-    if (i < 3 || i < 8 && i > 4) {
+    if (i<3 || i>4 && i<8) {
       returnString += convertOne;
     } else if (i === 3) {
-      returnString = returnString.replace(convertOne + convertOne + convertOne, convertOne + convertFive);
-    } else if (i === 4 || i === 9) {
-      returnString = returnString.replace(convertOne,"")
+      returnString = convertOne + convertFive;
     } else if (i === 8) {
-      returnString = returnString.replace(returnString, convertOne + convertTen)
+      returnString = convertOne + convertTen;
+    } else if (i === 4) {
+      returnString = returnString.replace(convertOne, "");
+    }
+    if (convertNumber === 0) {
+      returnString = convertTen;
     }
   }
   return returnString;
@@ -35,6 +37,7 @@ $(document).ready(function(){
       var convertOne = romanArray[b];
       var convertFive = romanArray[b+1];
       var convertTen = romanArray[b+2];
+      // debugger
       var romanNumber = converter(convertNumber, convertOne, convertFive, convertTen);
       answerString = romanNumber + answerString;
     }
